@@ -1,5 +1,5 @@
-local push = require "libraries/push/push" -- https://github.com/Ulydev/push
-log = require "libraries/log/log" -- https://github.com/rxi/log.lua
+local push = require "modules/push/push" -- https://github.com/Ulydev/push
+log = require "modules/log/log" -- https://github.com/rxi/log.lua
 
 GAME_WIDTH, GAME_HEIGHT = 384, 216 -- Usamos una resolución 16:9 divisible por 8 (resolución juego original: 224x256): https://pacoup.com/2011/06/12/list-of-true-169-resolutions/
 COLOR_FONDO = {0.1, 0.1, 0.1}
@@ -52,7 +52,6 @@ function love.draw()
     love.graphics.setColor(COLOR_PRINCIPAL)
     love.graphics.points({0, 0, GAME_WIDTH - 1, GAME_HEIGHT - 1})   -- Píxeles de prueba para localizar esquinas contrarias de la ventana de juego
     love.graphics.printf("¡HOLA MUNDO!", 0, (GAME_HEIGHT - font:getHeight()) / 2, GAME_WIDTH, "center")
-
     push:finish()
 end
 
