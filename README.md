@@ -4,9 +4,10 @@
 
 ## El juego en sus distintas fases de desarrollo
 
-Durante el desarrollo se han ido creando distintas ramas / branches para poder examinar el estado del desarrollo en distintos momentos:
+Durante el desarrollo se han ido creando distintas ramas / branches para poder examinar el estado del proyecto en distintos momentos:
 
 * `ventana-vacia`: Proyecto Love2D con una ventana vacía escalable
+* `pantallas-del-juego`: Añadidas las pantallas del juego (menu y game)
 
 ## Cómo descargar el código
 

@@ -1,6 +1,5 @@
 log = require "modules/log/log" -- https://github.com/rxi/log.lua
 local push = require "modules/push/push" -- https://github.com/Ulydev/push
---local menu_screen = require ("screens/menu")
 
 GAME_WIDTH, GAME_HEIGHT = 384, 216 -- Usamos una resolución 16:9 divisible por 8 próxima a la del original (224x256): https://pacoup.com/2011/06/12/list-of-true-169-resolutions/
 COLOR_BACKGROUND = {0.1, 0.1, 0.1}
