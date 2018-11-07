@@ -6,7 +6,7 @@
 
 Durante el desarrollo se han ido creando distintas ramas / branches para poder examinar el estado del desarrollo en distintos momentos:
 
-* `master`: Proyecto Love2D vacío
+* `ventana-vacia`: Proyecto Love2D con una ventana vacía escalable
 
 ## Cómo descargar el código
 
