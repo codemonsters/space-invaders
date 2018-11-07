@@ -12,8 +12,8 @@ function love.load()
     log.info("Iniciado programa")
 
     love.graphics.setDefaultFilter("nearest", "nearest") -- Cambiamos el filtro usado durante el escalado para evitar imágenes borrosas
-
-    love.graphics.setNewFont("assets/fonts/space_invaders.ttf", 7) -- Copyright kylemaoin 2010: https://fonts2u.com/space-invaders-regular.font
+    font = love.graphics.newFont("assets/fonts/space_invaders.ttf", 7)
+    love.graphics.setFont(font) -- Copyright kylemaoin 2010: https://fonts2u.com/space-invaders-regular.font
 
     -- Escalado de la ventana del juego (a resolución nativa si estamos en pantalla completa y con una pequeña reducción si estamos en una ventana)
     window_width, window_height = love.window.getDesktopDimensions()
@@ -23,7 +23,14 @@ function love.load()
         log.debug("Escalando dentro de una ventana")
         window_width, window_height = window_width * .7, window_height * .7
     end
-    push:setupScreen(GAME_WIDTH, GAME_HEIGHT, window_width, window_height, {fullscreen = love.window.getFullscreen(), resizable = true, canvas = false, pixelperfect = false, highdpi = true, streched = false})
+    push:setupScreen(GAME_WIDTH, GAME_HEIGHT, window_width, window_height, {
+        fullscreen = love.window.getFullscreen(),
+        resizable = true,
+        canvas = false,
+        pixelperfect = false,
+        highdpi = true,
+        streched = false
+    })
     
     math.randomseed(os.time())
 
@@ -40,12 +47,12 @@ end
 
 function love.draw()
     push:start()
-    love.graphics.scale(factor_escalado, factor_escalado)
     love.graphics.setBackgroundColor(COLOR_FONDO)
     love.graphics.clear(love.graphics.getBackgroundColor())
     love.graphics.setColor(COLOR_PRINCIPAL)
-    love.graphics.points({0, 1, GAME_WIDTH - 1, GAME_HEIGHT - 1})
-    love.graphics.print("¡HOLA MUNDO!", 150, 100)
+    love.graphics.points({0, 0, GAME_WIDTH - 1, GAME_HEIGHT - 1})   -- Píxeles de prueba para localizar esquinas contrarias de la ventana de juego
+    love.graphics.printf("¡HOLA MUNDO!", 0, (GAME_HEIGHT - font:getHeight()) / 2, GAME_WIDTH, "center")
+
     push:finish()
 end
 
