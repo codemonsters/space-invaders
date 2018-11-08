@@ -15,21 +15,27 @@ function love.load()
 
     -- Escalado de la ventana del juego (a resolución nativa si estamos en pantalla completa y con una pequeña reducción si estamos en una ventana)
     local window_width, window_height = love.window.getDesktopDimensions()
-    if not love.window.getFullscreen == true then
+    if love.window.getFullscreen() == true then
         log.debug("Escalando en pantalla completa")
     else
         log.debug("Escalando dentro de una ventana")
         window_width, window_height = window_width * .7, window_height * .7
     end
-    push:setupScreen(GAME_WIDTH, GAME_HEIGHT, window_width, window_height, {
-        fullscreen = love.window.getFullscreen(),
-        resizable = true,
-        canvas = false,
-        pixelperfect = false,
-        highdpi = true,
-        streched = false
-    })
-    
+    push:setupScreen(
+        GAME_WIDTH,
+        GAME_HEIGHT,
+        window_width,
+        window_height,
+        {
+            fullscreen = love.window.getFullscreen(),
+            resizable = true,
+            canvas = false,
+            pixelperfect = false,
+            highdpi = true,
+            streched = false
+        }
+    )
+
     math.randomseed(os.time())
 
     log.info("Juego cargado")
@@ -46,8 +52,10 @@ function love.draw()
     love.graphics.setColor(COLOR_MAIN)
 
     -- indicadores de prueba en esquinas superior izquierda e inferior derecha
-    love.graphics.line(0, 0, 10, 0); love.graphics.line(0, 0, 0, 10)
-    love.graphics.line(GAME_WIDTH - 1, GAME_HEIGHT - 1, GAME_WIDTH - 11, GAME_HEIGHT - 1); love.graphics.line(GAME_WIDTH - 1, GAME_HEIGHT - 1, GAME_WIDTH - 1, GAME_HEIGHT - 11)
+    love.graphics.line(0, 0, 10, 0)
+    love.graphics.line(0, 0, 0, 10)
+    love.graphics.line(GAME_WIDTH - 1, GAME_HEIGHT - 1, GAME_WIDTH - 11, GAME_HEIGHT - 1)
+    love.graphics.line(GAME_WIDTH - 1, GAME_HEIGHT - 1, GAME_WIDTH - 1, GAME_HEIGHT - 11)
 
     love.graphics.printf("¡HOLA MUNDO!", 0, (GAME_HEIGHT - font:getHeight()) / 2, GAME_WIDTH, "center")
     push:finish()
