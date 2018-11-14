@@ -2,6 +2,7 @@ log = require "modules/log/log" -- https://github.com/rxi/log.lua
 local push = require "modules/push/push" -- https://github.com/Ulydev/push
 
 GAME_WIDTH, GAME_HEIGHT = 384, 216 -- Usamos una resolución 16:9 divisible por 8 próxima a la del original (224x256): https://pacoup.com/2011/06/12/list-of-true-169-resolutions/
+
 COLOR_BACKGROUND = {0.1, 0.1, 0.1}
 COLOR_MAIN = {1, 1, 1}
 COLOR_ACCENT = {0.2, 0.94901960784314, 0.57647058823529}
@@ -10,8 +11,12 @@ function love.load()
     log.level = "trace" -- trace / debug / info / warn / error / fatal
     log.info("Iniciando")
 
-    love.graphics.setDefaultFilter("nearest", "nearest") -- Cambiamos el filtro usado durante el escalado para evitar imágenes borrosas
+    --love.graphics.setDefaultFilter("nearest", "nearest") -- Cambiamos el filtro usado durante el escalado para evitar imágenes borrosas
+    love.graphics.setDefaultFilter("nearest", "linear") -- Cambiamos el filtro usado durante el escalado para evitar imágenes borrosas
 
+    -- atlas será la textura que contiene todas las imágenes. Una optimización no implementada es utilizar un bitmap font incluido en esta misma imagen
+    atlas = love.graphics.newImage("assets/8593.png") -- Créditos y datos de contacto de los autores en la propia imagen: https://www.spriters-resource.com/arcade/spaceinv/sheet/8593/
+    
     font = love.graphics.newFont("assets/fonts/space_invaders.ttf", 7) -- Copyright kylemaoin 2010: https://fonts2u.com/space-invaders-regular.font
     love.graphics.setFont(font)
 
