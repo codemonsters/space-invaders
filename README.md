@@ -8,7 +8,7 @@ Durante el desarrollo se han ido creando distintas ramas / branches para poder e
 
 * `ventana-vacia`: Proyecto Love2D con una ventana vacía escalable
 * `pantallas-del-juego`: Añadidas las pantallas del juego (menu y game)
-* `movimiento-nave`: Añadida nave con movimiento básico
+* `movimiento-canon`: Movimiento básico del cañon
 
 ## Cómo descargar el código
 
