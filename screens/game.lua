@@ -1,9 +1,12 @@
 local game = {name = "Juego"}
 local CannonClass = require("gameobjects/cannon")
-local cannon = CannonClass:new()
+local cannon = CannonClass.new()
+local UfoClass = require("gameobjects/ufo")
+local ufo = UfoClass.new("squid")
 
 function game.load()
-    cannon:load((GAME_WIDTH - cannon.width)/2, GAME_HEIGHT - 20)
+    cannon:load((GAME_WIDTH - cannon.width) / 2, GAME_HEIGHT - 20)
+    ufo:load((GAME_WIDTH - ufo.width) / 2, 20 + ufo.height)
 end
 
 function game.update(dt)
@@ -25,6 +28,7 @@ function game.draw()
     love.graphics.print("SCORE", 20, 5)
     love.graphics.print("LIVES", 250, 5)
     cannon:draw()
+    ufo:draw()
 end
 
 function game.keypressed(key, scancode, isrepeat)
