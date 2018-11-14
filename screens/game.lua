@@ -1,6 +1,6 @@
 local game = {name = "Juego"}
 local CannonClass = require("gameobjects/cannon")
-local cannon = CannonClass:new()
+local cannon = CannonClass.new()
 
 function game.load()
     cannon:load((GAME_WIDTH - cannon.width)/2, GAME_HEIGHT - 20)

@@ -11,8 +11,7 @@ function Cannon.new()
     return o
 end
 
-function Cannon
-:load(x, y)
+function Cannon:load(x, y)
     self.x = x
     self.y = y
     self.moving_left = false
@@ -20,8 +19,7 @@ function Cannon
     self.quad = love.graphics.newQuad(36, 18, 13, 8, atlas:getDimensions())
 end
 
-function Cannon
-:draw()
+function Cannon:draw()
     love.graphics.draw(atlas, self.quad, self.x, self.y)
 end
 
