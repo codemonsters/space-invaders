@@ -9,6 +9,7 @@ Durante el desarrollo se han ido creando distintas ramas / branches para poder e
 * `ventana-vacia`: Proyecto Love2D con una ventana vacía escalable
 * `pantallas-del-juego`: Añadidas las pantallas del juego (menu y game)
 * `movimiento-canon`: Movimiento básico del cañon
+* `ufo`: Añadido gameobject ufo para crear los tres tipos de ovnis
 
 ## Cómo descargar el código
 
