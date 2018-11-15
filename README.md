@@ -10,6 +10,7 @@ Durante el desarrollo se han ido creando distintas ramas / branches para poder e
 * `pantallas-del-juego`: Añadidas las pantallas del juego (menu y game)
 * `movimiento-canon`: Movimiento básico del cañon
 * `ufo`: Añadido gameobject ufo para crear los tres tipos de ovnis
+* `ufo-squad`: Añadido gameobject squad para manejar todo el escuadrón de enemigos
 
 ## Cómo descargar el código
 
