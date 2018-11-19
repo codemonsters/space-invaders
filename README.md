@@ -12,6 +12,7 @@ Durante el desarrollo se han ido creando distintas ramas / branches para poder e
 * `ufo`: Añadido gameobject ufo para crear los tres tipos de ovnis
 * `ufo-squad`: Añadido gameobject squad para manejar todo el escuadrón de enemigos
 * `movimiento-squad`: Movimiento del escuadrón de enemigos y cambio de frame
+* `disparo-canon`: Posibilidad de disparar con el cañón (¡todavía de fogueo!)
 
 ## Cómo descargar el código
 
