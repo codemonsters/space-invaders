@@ -22,6 +22,9 @@ function game.update(dt)
             cannon.x = GAME_WIDTH - cannon.width
         end
     end
+
+    -- Actualizamos la posición del escuadrón de enemigos
+    squad:update(dt)
 end
 
 function game.draw()

@@ -5,8 +5,25 @@ local Ufo = {
 Ufo.__index = Ufo
 
 function Ufo.new(type)
-    local o = {}
-    setmetatable(o, Ufo)   -- La clase Ufo será la metatabla del nuevo objeto que estamos creado
+    local o = {
+        x = 0,
+        y = 0
+        --[[
+        states = {
+            moving_right = {
+                update = function(self, dt)
+                    self.x = self.x + self.vx * dt
+                end
+            },
+            moving_down = {
+                update = function(self, dt)
+                    self.y = self.y + self.vy * dt
+                end
+            }
+        }
+        --]]
+    }
+    setmetatable(o, Ufo) -- la clase Ufo será la metatabla del nuevo objeto que estamos creado
     if type == "octopus" then
         o.quads = {
             love.graphics.newQuad(21, 3, 12, 8, atlas:getDimensions()),
@@ -35,11 +52,15 @@ end
 function Ufo:load(x, y)
     self.x = x
     self.y = y
-    
+    -- self.state = self.states.moving_right -- establecemos su estado inicial
 end
 
-function Ufo:draw()
-    love.graphics.draw(atlas, self.quads[1], self.x, self.y)
+function Ufo:draw(frame)
+    love.graphics.draw(atlas, self.quads[frame], self.x, self.y)
+end
+
+function Ufo:update(dt)
+    self.state.update(self, dt)
 end
 
 return Ufo

@@ -16,7 +16,7 @@ function love.load()
 
     -- atlas será la textura que contiene todas las imágenes. Una optimización no implementada es utilizar un bitmap font incluido en esta misma imagen
     atlas = love.graphics.newImage("assets/8593.png") -- Créditos y datos de contacto de los autores en la propia imagen: https://www.spriters-resource.com/arcade/spaceinv/sheet/8593/
-    
+
     font = love.graphics.newFont("assets/fonts/space_invaders.ttf", 7) -- Copyright kylemaoin 2010: https://fonts2u.com/space-invaders-regular.font
     love.graphics.setFont(font)
 
@@ -74,4 +74,19 @@ function change_screen(new_screen)
     screen = new_screen
     log.debug("Cargando pantalla: " .. screen.name)
     screen.load()
+end
+
+function dump(o)
+    if type(o) == "table" then
+        local s = "{ "
+        for k, v in pairs(o) do
+            if type(k) ~= "number" then
+                k = '"' .. k .. '"'
+            end
+            s = s .. "[" .. k .. "] = " .. dump(v) .. ","
+        end
+        return s .. "} "
+    else
+        return tostring(o)
+    end
 end
