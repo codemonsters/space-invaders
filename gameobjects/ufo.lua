@@ -8,20 +8,6 @@ function Ufo.new(type)
     local o = {
         x = 0,
         y = 0
-        --[[
-        states = {
-            moving_right = {
-                update = function(self, dt)
-                    self.x = self.x + self.vx * dt
-                end
-            },
-            moving_down = {
-                update = function(self, dt)
-                    self.y = self.y + self.vy * dt
-                end
-            }
-        }
-        --]]
     }
     setmetatable(o, Ufo) -- la clase Ufo será la metatabla del nuevo objeto que estamos creado
     if type == "octopus" then
@@ -52,7 +38,6 @@ end
 function Ufo:load(x, y)
     self.x = x
     self.y = y
-    -- self.state = self.states.moving_right -- establecemos su estado inicial
 end
 
 function Ufo:draw(frame)
