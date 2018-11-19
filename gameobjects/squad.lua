@@ -6,8 +6,8 @@ Squad.__index = Squad
 function Squad.new()
     local o = {
         drop_per_turn = 8, -- distancia que los ovnis descenderan cada vez que alcancen el lateral de la pantalla
-        min_speed = 10, -- veloicdad mínima (será la inicial del escuadrón, cuando todavía no hayamos destruido ningún enemigo)
-        max_speed = 100, -- velocidad máxima (se alcanzará cuando solo quede un enemigo en el escuadrón)
+        min_speed = 11 , -- veloicdad mínima (será la inicial del escuadrón, cuando todavía no hayamos destruido ningún enemigo)
+        max_speed = 150, -- velocidad máxima (se alcanzará cuando solo quede un enemigo en el escuadrón)
         frame_change_speed_factor = 10, -- mayor valor para mantener el mismo frame durante más tiempo
         vx = function(self)
             -- la velocidad horizontal será mayor cuantos menos ovnis queden
@@ -106,7 +106,6 @@ end
 
 function Squad:update(dt)
     -- Actualizaremos el escuadrón según el estado en el que esté
-    print("--> " .. self:vx())
     self.state.update(self, dt)
     if self.state ~= self.next_state then
         self.state = self.next_state
