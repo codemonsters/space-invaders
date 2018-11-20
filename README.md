@@ -14,6 +14,7 @@ Durante el desarrollo se han ido creando distintas ramas / branches para poder e
 * `movimiento-squad`: Movimiento del escuadrón de enemigos y cambio de frame
 * `disparo-canon`: Posibilidad de disparar con el cañón (¡todavía de fogueo!)
 * `colisiones-disparo-canon`: Detección y resolución de colisiones entre el disparo del cañón y el escuadrón de enemigos
+* `disparo-ufo`: Disparos desde los ovnis
 
 ## Cómo descargar el código
 

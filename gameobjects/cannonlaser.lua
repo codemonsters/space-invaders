@@ -1,7 +1,8 @@
 local CannonLaser = {
     width = 1,
     height = 4,
-    vy = 220 -- La velocidad con la que se desplaza el disparo
+    vy = 220, -- La velocidad con la que se desplaza el disparo
+    quad = love.graphics.newQuad(31, 21, 1, 4, atlas:getDimensions())
 }
 
 CannonLaser.__index = CannonLaser
@@ -9,7 +10,6 @@ CannonLaser.__index = CannonLaser
 function CannonLaser.new()
     local o = {}
     setmetatable(o, CannonLaser)   -- La clase Cannon será la metatabla del nuevo objeto que estamos creado
-    o.quad = love.graphics.newQuad(31, 21, CannonLaser.width, CannonLaser.height, atlas:getDimensions())
     return o
 end
 

@@ -1,6 +1,7 @@
 local Cannon = {
     width = 13,
-    vx = 100 -- La velocidad de desplazamiento de la nave
+    vx = 100, -- La velocidad de desplazamiento de la nave
+    quad = love.graphics.newQuad(36, 18, 13, 8, atlas:getDimensions())
 }
 
 Cannon.__index = Cannon
@@ -17,7 +18,6 @@ function Cannon
     self.y = y
     self.moving_left = false
     self.moving_right = false
-    self.quad = love.graphics.newQuad(36, 18, 13, 8, atlas:getDimensions())
 end
 
 function Cannon
