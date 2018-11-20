@@ -1,7 +1,15 @@
 local Ufo = {
     max_time_exploding = 0.4, -- el tiempo que durará la explosión del ufo antes de desaparecer
     height = 8,
-    exploding_quad = love.graphics.newQuad(102, 3, 13, 8, atlas:getDimensions()),
+    base_quads = {
+        octopus1 = love.graphics.newQuad(21, 3, 12, 8, atlas:getDimensions()),
+        octopus2 = love.graphics.newQuad(36, 3, 12, 8, atlas:getDimensions()),
+        crab1 = love.graphics.newQuad(51, 3, 11, 8, atlas:getDimensions()),
+        crab2 = love.graphics.newQuad(65, 3, 11, 8, atlas:getDimensions()),
+        squid1 = love.graphics.newQuad(79, 3, 8, 8, atlas:getDimensions()),
+        squid2 = love.graphics.newQuad(91, 3, 8, 8, atlas:getDimensions()),
+        exploding = love.graphics.newQuad(102, 3, 13, 8, atlas:getDimensions()),
+    },
     states = {
         normal = {
             update = function(self, dt, squad_translate_x, squad_translate_y)
@@ -33,7 +41,7 @@ local Ufo = {
                 self.y = self.y + squad_translate_y
             end,
             draw = function(self, frame)
-                love.graphics.draw(atlas, self.exploding_quad, self.x, self.y)
+                love.graphics.draw(atlas, self.base_quads.exploding, self.x, self.y)
             end
         },
         dead = {
@@ -53,20 +61,20 @@ function Ufo.new(type)
     setmetatable(o, Ufo) -- la clase Ufo será la metatabla del nuevo objeto que estamos creado
     if type == "octopus" then
         o.quads = {
-            love.graphics.newQuad(21, 3, 12, 8, atlas:getDimensions()),
-            love.graphics.newQuad(36, 3, 12, 8, atlas:getDimensions())
+            Ufo.base_quads.octopus1,
+            Ufo.base_quads.octopus2
         }
         o.width = 12
     elseif type == "crab" then
         o.quads = {
-            love.graphics.newQuad(51, 3, 11, 8, atlas:getDimensions()),
-            love.graphics.newQuad(65, 3, 11, 8, atlas:getDimensions())
+            Ufo.base_quads.crab1,
+            Ufo.base_quads.crab2
         }
         o.width = 11
     elseif type == "squid" then
         o.quads = {
-            love.graphics.newQuad(79, 3, 8, 8, atlas:getDimensions()),
-            love.graphics.newQuad(91, 3, 8, 8, atlas:getDimensions())
+            Ufo.base_quads.squid1,
+            Ufo.base_quads.squid2
         }
         o.width = 8
     else
