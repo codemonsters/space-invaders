@@ -1,5 +1,46 @@
 local Ufo = {
-    height = 8
+    max_time_exploding = 0.4, -- el tiempo que durará la explosión del ufo antes de desaparecer
+    height = 8,
+    exploding_quad = love.graphics.newQuad(102, 3, 13, 8, atlas:getDimensions()),
+    states = {
+        normal = {
+            update = function(self, dt, squad_translate_x, squad_translate_y)
+                self.x = self.x + squad_translate_x
+                self.y = self.y + squad_translate_y
+            end,
+            draw = function(self, frame)
+                love.graphics.draw(atlas, self.quads[frame], self.x, self.y)
+            end
+        },
+        shot_received = {
+            update = function(self, dt, squad_translate_x, squad_translate_y)
+                self.time_exploding = 0 -- tiempo transcurrido desde el impacto
+                self.x = self.x + squad_translate_x
+                self.y = self.y + squad_translate_y
+                self.state = self.states.exploding
+            end,
+            draw = function(self, frame)
+                love.graphics.draw(atlas, self.quads[frame], self.x, self.y)
+            end
+        },
+        exploding = {
+            update = function(self, dt, squad_translate_x, squad_translate_y)
+                self.time_exploding = self.time_exploding + dt
+                if self.time_exploding > self.max_time_exploding then
+                    self.state = self.states.dead
+                end
+                self.x = self.x + squad_translate_x
+                self.y = self.y + squad_translate_y
+            end,
+            draw = function(self, frame)
+                love.graphics.draw(atlas, self.exploding_quad, self.x, self.y)
+            end
+        },
+        dead = {
+            update = function() end,
+            draw = function() end
+        }
+    }
 }
 
 Ufo.__index = Ufo
@@ -7,7 +48,7 @@ Ufo.__index = Ufo
 function Ufo.new(type)
     local o = {
         x = 0,
-        y = 0
+        y = 0,
     }
     setmetatable(o, Ufo) -- la clase Ufo será la metatabla del nuevo objeto que estamos creado
     if type == "octopus" then
@@ -38,14 +79,15 @@ end
 function Ufo:load(x, y)
     self.x = x
     self.y = y
+    self.state = self.states.normal
 end
 
 function Ufo:draw(frame)
-    love.graphics.draw(atlas, self.quads[frame], self.x, self.y)
+    self.state.draw(self, frame)
 end
 
-function Ufo:update(dt)
-    self.state.update(self, dt)
+function Ufo:update(dt, squad_translate_x, squad_translate_y)
+    self.state.update(self, dt, squad_translate_x, squad_translate_y)
 end
 
 return Ufo

@@ -7,7 +7,7 @@ function Squad.new()
     local o = {
         drop_per_turn = 8, -- distancia que los ovnis descenderan cada vez que alcancen el lateral de la pantalla
         min_speed = 11 , -- veloicdad mínima (será la inicial del escuadrón, cuando todavía no hayamos destruido ningún enemigo)
-        max_speed = 150, -- velocidad máxima (se alcanzará cuando solo quede un enemigo en el escuadrón)
+        max_speed = 80, -- velocidad máxima (se alcanzará cuando solo quede un enemigo en el escuadrón)
         frame_change_speed_factor = 10, -- mayor valor para mantener el mismo frame durante más tiempo
         vx = function(self)
             -- la velocidad horizontal será mayor cuantos menos ovnis queden
@@ -30,10 +30,14 @@ function Squad.new()
         states = {
             moving_sideways = {
                 update = function(self, dt)
-                    for _, ufo in pairs(self.attackers) do
-                        ufo.x = ufo.x + self:vx() * dt
-                        if ufo.x > GAME_WIDTH - ufo.width or ufo.x <= 0 then
-                            self.next_state = self.states.start_moving_down
+                    for i, ufo in pairs(self.attackers) do
+                        if ufo.state == ufo.states.dead then
+                            table.remove(self.attackers, i)
+                        else
+                            ufo:update(dt, self:vx() * dt, 0)   -- args: dt, translate_x, translate_y
+                            if ufo.state == ufo.states.normal and (ufo.x > GAME_WIDTH - ufo.width or ufo.x <= 0) then
+                                self.next_state = self.states.start_moving_down
+                            end
                         end
                     end
                 end
@@ -47,8 +51,12 @@ function Squad.new()
             moving_down = {
                 update = function(self, dt)
                     self.vertical_pixels_traveled = self.vertical_pixels_traveled + self:vy() * dt
-                    for _, ufo in pairs(self.attackers) do
-                        ufo.y = ufo.y + self:vy() * dt
+                    for i, ufo in pairs(self.attackers) do
+                        if ufo.state == ufo.states.dead then
+                            table.remove(self.attackers, i)
+                        else
+                            ufo:update(dt, 0, self:vy() * dt)   -- args: dt, translate_x, translate_y
+                        end
                     end
                     if self.vertical_pixels_traveled >= self.drop_per_turn then
                         self.direction = -1 * self.direction
@@ -110,6 +118,7 @@ function Squad:update(dt)
     if self.state ~= self.next_state then
         self.state = self.next_state
     end
+
 
     -- Actualizamos el frame que utilizamos para dibujar cada ufo. Lo hacemos de forma proporcional a la velocidad con la que se mueven
     self.frame_elapsed_time = self.frame_elapsed_time + dt

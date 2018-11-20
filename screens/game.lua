@@ -34,10 +34,24 @@ function game.update(dt)
     -- disparo desde el cañón
     if cannonLaser.shooting then
         cannonLaser:update(dt)
+        -- ¿hemos alcanzado a algún enemigo del escuadrón?
+        for i, ufo in pairs(squad.attackers) do
+            if ufo.state == ufo.states.normal and aabb_collision(cannonLaser.x, cannonLaser.y, cannonLaser.width, cannonLaser.height, ufo.x, ufo.y, ufo.width, ufo.height) then
+                -- sí, le hemos dado
+                ufo.state = ufo.states.shot_received
+                cannonLaser.shooting = false
+                break
+            end
+        end
     elseif fire_pressed then
-        -- ¡disparamos!
+        -- ¡fuego! iniciar nuevo disparo
         cannonLaser:shoot(cannon.x + cannon.width / 2, cannon.y)
     end
+end
+
+-- comprueba colisión entre dos rectángulos / axis aligned bounding boxes
+function aabb_collision(x1, y1, w1, h1, x2, y2, w2, h2)
+    return x1 < x2 + w2 and x2 < x1 + w1 and y1 < y2 + h2 and y2 < y1 + h1
 end
 
 function game.draw()

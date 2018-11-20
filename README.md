@@ -13,7 +13,7 @@ Durante el desarrollo se han ido creando distintas ramas / branches para poder e
 * `ufo-squad`: Añadido gameobject squad para manejar todo el escuadrón de enemigos
 * `movimiento-squad`: Movimiento del escuadrón de enemigos y cambio de frame
 * `disparo-canon`: Posibilidad de disparar con el cañón (¡todavía de fogueo!)
-
+* `colisiones-disparo-canon`: Detección y resolución de colisiones entre el disparo del cañón y el escuadrón de enemigos
 ## Cómo descargar el código
 
 Para descargar una rama particular:
