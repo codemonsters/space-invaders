@@ -5,6 +5,10 @@ local CannonLaserClass = require("gameobjects/cannonlaser")
 local cannonLaser = CannonLaserClass.new()
 local SquadClass = require("gameobjects/squad")
 local squad = SquadClass.new()
+local UfoLaserClass = require("gameobjects/ufolaser")
+local ufoLasers
+local min_time_between_ufo_shots = 0.2   -- en segundos
+local max_time_between_ufo_shots = 3   -- en segundos
 local fire_pressed
 
 function game.load()
@@ -12,6 +16,10 @@ function game.load()
     cannon:load((GAME_WIDTH - cannon.width) / 2, GAME_HEIGHT - 20)
     cannonLaser:load()
     squad:load()
+
+    ufoLasers = {}
+    time_since_last_shot = 0
+    time_next_shot = randomFloat(min_time_between_ufo_shots, max_time_between_ufo_shots)
 end
 
 function game.update(dt)
@@ -44,14 +52,25 @@ function game.update(dt)
             end
         end
     elseif fire_pressed then
-        -- ¡fuego! iniciar nuevo disparo
+        -- ¡fuego! iniciar nuevo disparo del cañón
         cannonLaser:shoot(cannon.x + cannon.width / 2, cannon.y)
     end
-end
 
--- comprueba colisión entre dos rectángulos / axis aligned bounding boxes
-function aabb_collision(x1, y1, w1, h1, x2, y2, w2, h2)
-    return x1 < x2 + w2 and x2 < x1 + w1 and y1 < y2 + h2 and y2 < y1 + h1
+    -- disparos desde los ovnis
+    time_since_last_shot = time_since_last_shot + dt
+    if time_since_last_shot >= time_next_shot and #squad.first_line_ufos > 0 then
+        -- disparamos desde una de las naves de la primera línea
+        local ufo_shooting = squad.first_line_ufos[math.random(1, #squad.first_line_ufos)]
+        table.insert(ufoLasers, UfoLaserClass.new(ufo_shooting.x, ufo_shooting.y))
+        time_since_last_shot = 0
+        time_next_shot = randomFloat(min_time_between_ufo_shots, max_time_between_ufo_shots)
+    end
+    for i, ufoLaser in pairs(ufoLasers) do
+        ufoLaser:update(dt)
+        if ufoLaser.active == false then
+            table.remove(ufoLasers, i)
+        end
+    end
 end
 
 function game.draw()
@@ -64,6 +83,11 @@ function game.draw()
     if cannonLaser.shooting then
         cannonLaser:draw()
     end
+
+    for i, ufoLaser in pairs(ufoLasers) do
+        ufoLaser:draw()
+    end
+
     squad:draw()
     cannon:draw()
 end
@@ -88,6 +112,18 @@ function game.keyreleased(key, scancode, isrepeat)
     elseif key == "space" then
         fire_pressed = false
     end
+end
+
+
+-- comprueba colisión entre dos rectángulos / axis aligned bounding boxes
+function aabb_collision(x1, y1, w1, h1, x2, y2, w2, h2)
+    return x1 < x2 + w2 and x2 < x1 + w1 and y1 < y2 + h2 and y2 < y1 + h1
+end
+
+function randomFloat(min, max)
+	local range = max - min
+	local offset = range * math.random()
+	return min + offset
 end
 
 return game

@@ -33,6 +33,7 @@ function Squad.new()
                     for i, ufo in pairs(self.attackers) do
                         if ufo.state == ufo.states.dead then
                             table.remove(self.attackers, i)
+                            self:refresh_first_line_ufo_list()
                         else
                             ufo:update(dt, self:vx() * dt, 0)   -- args: dt, translate_x, translate_y
                             if ufo.state == ufo.states.normal and (ufo.x > GAME_WIDTH - ufo.width or ufo.x <= 0) then
@@ -88,7 +89,7 @@ function Squad:load()
         self.attackers[i] = nil
     end
 
-    -- Creamos el escuadrón inicial de enemigos
+    -- creamos el escuadrón inicial de enemigos
     for f = 0, 4 do
         for i = 1, 11 do
             local ufo
@@ -104,6 +105,32 @@ function Squad:load()
         end
     end
     self.attackers_init_count = #self.attackers
+
+    self:refresh_first_line_ufo_list()
+end
+
+--  determinamos el grupo de ovnis que no tienen ningún otro debajo (serán los que puedan disparar)
+function Squad:refresh_first_line_ufo_list()
+    local f = {}
+    for _, ufo_a in pairs(self.attackers) do
+        if ufo_a.state == ufo_a.states.normal then
+            print("--> (" .. ufo_a.x .. ", " .. ufo_a.y .. ")")
+            local has_ufo_below = false
+            for _, ufo_b in pairs(self.attackers) do
+                -- print("--> (" .. ufo_a.x .. ", " .. ufo_a.y .. ") <-> (" ..ufo_b.x .. ", " .. ufo_b.y .. ")")
+                --if ufo_a.x == ufo_b.x and ufo_a.y < ufo_b.y then
+                if ufo_a.x < ufo_b.x + ufo_b.width and ufo_b.x < ufo_a.x + ufo_a.width and ufo_a.y < ufo_b.y then
+                    has_ufo_below = true
+                    break
+                end
+            end
+            if has_ufo_below == false then
+                table.insert(f, ufo_a)
+            end
+        end
+    end
+    self.first_line_ufos = f
+    print("Número de UFOS en primera fila = " .. #self.first_line_ufos)
 end
 
 function Squad:draw()
@@ -119,8 +146,7 @@ function Squad:update(dt)
         self.state = self.next_state
     end
 
-
-    -- Actualizamos el frame que utilizamos para dibujar cada ufo. Lo hacemos de forma proporcional a la velocidad con la que se mueven
+    -- actualizamos el frame que utilizamos para dibujar cada ufo. Lo hacemos de forma proporcional a la velocidad con la que se mueven
     self.frame_elapsed_time = self.frame_elapsed_time + dt
     if self.frame_elapsed_time >= self:frame_max_time() then
         self.frame_elapsed_time = self.frame_elapsed_time % self:frame_max_time()

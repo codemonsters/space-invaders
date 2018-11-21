@@ -10,6 +10,7 @@ COLOR_ACCENT = {0.2, 0.94901960784314, 0.57647058823529}
 function love.load()
     log.level = "trace" -- trace / debug / info / warn / error / fatal
     log.info("Iniciando")
+    love.mouse.setVisible(false)
 
     --love.graphics.setDefaultFilter("nearest", "nearest") -- Cambiamos el filtro usado durante el escalado para evitar imágenes borrosas
     love.graphics.setDefaultFilter("nearest", "linear") -- Cambiamos el filtro usado durante el escalado para evitar imágenes borrosas
