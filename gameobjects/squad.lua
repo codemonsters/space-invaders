@@ -85,9 +85,7 @@ function Squad:load()
     self.next_state = self.state
 
     -- Eliminamos cualquier escuadrón de enemigos que pudiese existir tras una partida previa
-    for i = 0, #self.attackers do
-        self.attackers[i] = nil
-    end
+    self.attackers = {}
 
     -- creamos el escuadrón inicial de enemigos
     for f = 0, 4 do
@@ -114,11 +112,8 @@ function Squad:refresh_first_line_ufo_list()
     local f = {}
     for _, ufo_a in pairs(self.attackers) do
         if ufo_a.state == ufo_a.states.normal then
-            print("--> (" .. ufo_a.x .. ", " .. ufo_a.y .. ")")
             local has_ufo_below = false
             for _, ufo_b in pairs(self.attackers) do
-                -- print("--> (" .. ufo_a.x .. ", " .. ufo_a.y .. ") <-> (" ..ufo_b.x .. ", " .. ufo_b.y .. ")")
-                --if ufo_a.x == ufo_b.x and ufo_a.y < ufo_b.y then
                 if ufo_a.x < ufo_b.x + ufo_b.width and ufo_b.x < ufo_a.x + ufo_a.width and ufo_a.y < ufo_b.y then
                     has_ufo_below = true
                     break
@@ -130,7 +125,7 @@ function Squad:refresh_first_line_ufo_list()
         end
     end
     self.first_line_ufos = f
-    print("Número de UFOS en primera fila = " .. #self.first_line_ufos)
+    log.trace("Número de UFOS en primera fila = " .. #self.first_line_ufos)
 end
 
 function Squad:draw()
