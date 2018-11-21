@@ -24,18 +24,13 @@ end
 
 function game.update(dt)
     -- actualizamos la posición de la nave
-    if cannon.moving_left and not cannon.moving_right then
-        cannon.x = cannon.x - cannon.vx * dt
-        if cannon.x < 0 then
-            cannon.x = 0
-        end
-    elseif cannon.moving_right and not cannon.moving_left then
-        cannon.x = cannon.x + cannon.vx * dt
-        if cannon.x >= GAME_WIDTH - cannon.width then
-            cannon.x = GAME_WIDTH - cannon.width
-        end
+    cannon:update(dt)
+    if cannon.state == cannon.states.shot_received or cannon.state == cannon.states.exploding then
+        return  -- congelamos el estado del juego después de haber sido alcanzados
+    elseif cannon.state == cannon.states.dead then
+        ufoLasers = {}  -- eliminamos todos los disparos restantes de la pantalla antes de renacer
+        cannon.state = cannon.states.normal
     end
-
     -- actualizamos la posición del escuadrón de enemigos
     squad:update(dt)
 
@@ -69,7 +64,11 @@ function game.update(dt)
         ufoLaser:update(dt)
         if ufoLaser.active == false then
             table.remove(ufoLasers, i)
+        elseif aabb_collision(ufoLaser.x, ufoLaser.y, ufoLaser.width, ufoLaser.height, cannon.x, cannon.y, cannon.width, cannon.height) then
+            cannon.state = cannon.states.shot_received
+            ufoLaser.active = false
         end
+
     end
 end
 
