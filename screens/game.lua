@@ -61,7 +61,7 @@ function game.update(dt)
     if time_since_last_shot >= time_next_shot and #squad.first_line_ufos > 0 then
         -- disparamos desde una de las naves de la primera línea
         local ufo_shooting = squad.first_line_ufos[math.random(1, #squad.first_line_ufos)]
-        table.insert(ufoLasers, UfoLaserClass.new(ufo_shooting.x, ufo_shooting.y))
+        table.insert(ufoLasers, UfoLaserClass.new(ufo_shooting.x + ufo_shooting.width / 2, ufo_shooting.y))
         time_since_last_shot = 0
         time_next_shot = randomFloat(min_time_between_ufo_shots, max_time_between_ufo_shots)
     end
@@ -113,7 +113,6 @@ function game.keyreleased(key, scancode, isrepeat)
         fire_pressed = false
     end
 end
-
 
 -- comprueba colisión entre dos rectángulos / axis aligned bounding boxes
 function aabb_collision(x1, y1, w1, h1, x2, y2, w2, h2)
