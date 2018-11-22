@@ -35,10 +35,7 @@ function game.update(dt)
         cannonLaser.active = false  -- eliminamos también nuestro disparo
         lives = lives - 1
         if lives == 0 then
-            if score > high_score then
-                high_score = score
-            end
-            change_screen(require("screens/menu"))
+            game_over()
         end
         cannon.state = cannon.states.normal
     end
@@ -147,7 +144,7 @@ end
 
 function game.keypressed(key, scancode, isrepeat)
     if key == "escape" then
-        change_screen(require("screens/menu"))
+        game_over()
     elseif key == "left" then
         cannon.moving_left = true
     elseif key == "right" then
@@ -165,6 +162,13 @@ function game.keyreleased(key, scancode, isrepeat)
     elseif key == "space" then
         fire_pressed = false
     end
+end
+
+function game_over()
+    if score > high_score then
+        high_score = score
+    end
+    change_screen(require("screens/menu"))
 end
 
 -- comprueba colisión entre dos rectángulos / axis aligned bounding boxes
