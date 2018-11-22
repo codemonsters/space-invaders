@@ -31,6 +31,10 @@ function game.update(dt)
         return  -- congelamos el estado del juego después de haber sido alcanzados
     elseif cannon.state == cannon.states.dead then
         ufoLasers = {}  -- eliminamos todos los disparos restantes de la pantalla antes de renacer
+        lives = lives - 1
+        if lives == 0 then
+            change_screen(require("screens/menu"))
+        end
         cannon.state = cannon.states.normal
     end
     -- actualizamos la posición del escuadrón de enemigos
@@ -106,6 +110,14 @@ function draw_hud()
         math.floor(GAME_WIDTH / 3 + 0.5),
         "center"
     )
+
+    love.graphics.printf(lives,
+        math.floor(GAME_WIDTH * 2 / 3 + 0.5),
+        2 * font:getHeight(),
+        math.floor(GAME_WIDTH / 3 + 0.5),
+        "center"
+    )
+
 end
 
 function game.draw()
