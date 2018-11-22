@@ -32,6 +32,7 @@ function game.update(dt)
         return  -- congelamos el estado del juego después de haber sido alcanzados
     elseif cannon.state == cannon.states.dead then
         ufoLasers = {}  -- eliminamos todos los disparos restantes de la pantalla antes de renacer
+        cannonLaser.active = false  -- eliminamos también nuestro disparo
         lives = lives - 1
         if lives == 0 then
             if score > high_score then
