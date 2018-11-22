@@ -14,7 +14,7 @@ function menu.draw()
     love.graphics.printf(
         "PLAY SPACE INVADERS\n\nFIRE TO START",
         0,
-        (GAME_HEIGHT - font:getHeight() * 4) / 2,
+        math.floor((GAME_HEIGHT - font:getHeight() * 4) / 2 + 0.5),
         GAME_WIDTH,
         "center"
     )

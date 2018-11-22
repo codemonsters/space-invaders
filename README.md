@@ -16,6 +16,7 @@ Durante el desarrollo se han ido creando distintas ramas / branches para poder e
 * `colisiones-disparo-canon`: Detección y resolución de colisiones entre el disparo del cañón y el escuadrón de enemigos
 * `disparo-ufo`: Disparos desde los ovnis
 * `colisiones-disparo-ufo`: Colisiones entre los disparos de los ovnis y el cañón
+* `vidas`: Si perdemos tres vidas volveremos al menú principal del juego
 
 ## Cómo descargar el código
 

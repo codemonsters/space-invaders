@@ -10,8 +10,10 @@ local ufoLasers
 local min_time_between_ufo_shots = 0.2   -- en segundos
 local max_time_between_ufo_shots = 3   -- en segundos
 local fire_pressed
+local lives
 
 function game.load()
+    lives = 3
     fire_pressed = false
     cannon:load((GAME_WIDTH - cannon.width) / 2, GAME_HEIGHT - 20)
     cannonLaser:load()
@@ -72,13 +74,47 @@ function game.update(dt)
     end
 end
 
+function draw_hud()
+    love.graphics.setColor(COLOR_MAIN)
+    love.graphics.printf("SCORE",
+        0,
+        font:getHeight(),
+        math.floor(GAME_WIDTH / 3 + 0.5),
+        "center"
+    )
+    love.graphics.printf("0",
+        0,
+        2 * font:getHeight(),
+        math.floor(GAME_WIDTH / 3 + 0.5),
+        "center"
+    )
+    love.graphics.printf("HI-SCORE",
+        math.floor(GAME_WIDTH / 3 + 0.5),
+        font:getHeight(),
+        math.floor(GAME_WIDTH / 3 + 0.5),
+        "center"
+    )
+    love.graphics.printf("0",
+        math.floor(GAME_WIDTH / 3 + 0.5),
+        2 * font:getHeight(),
+        math.floor(GAME_WIDTH / 3 + 0.5),
+        "center"
+    )
+    love.graphics.printf("LIVES",
+        math.floor(GAME_WIDTH * 2 / 3 + 0.5),
+        font:getHeight(),
+        math.floor(GAME_WIDTH / 3 + 0.5),
+        "center"
+    )
+end
+
 function game.draw()
     -- el fondo del mundo
     love.graphics.setBackgroundColor(COLOR_BACKGROUND)
     love.graphics.clear(love.graphics.getBackgroundColor())
-    love.graphics.setColor(COLOR_MAIN)
-    love.graphics.print("SCORE", 20, 5)
-    love.graphics.print("LIVES", 250, 5)
+    
+    draw_hud()
+
     if cannonLaser.shooting then
         cannonLaser:draw()
     end
