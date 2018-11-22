@@ -7,6 +7,8 @@ COLOR_BACKGROUND = {0.1, 0.1, 0.1}
 COLOR_MAIN = {1, 1, 1}
 COLOR_ACCENT = {0.2, 0.94901960784314, 0.57647058823529}
 
+high_score = 0
+
 function love.load()
     log.level = "trace" -- trace / debug / info / warn / error / fatal
     log.info("Iniciando")

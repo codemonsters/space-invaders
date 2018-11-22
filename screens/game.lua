@@ -13,6 +13,7 @@ local fire_pressed
 local lives
 
 function game.load()
+    score = 0
     lives = 3
     fire_pressed = false
     cannon:load((GAME_WIDTH - cannon.width) / 2, GAME_HEIGHT - 20)
@@ -33,6 +34,9 @@ function game.update(dt)
         ufoLasers = {}  -- eliminamos todos los disparos restantes de la pantalla antes de renacer
         lives = lives - 1
         if lives == 0 then
+            if score > high_score then
+                high_score = score
+            end
             change_screen(require("screens/menu"))
         end
         cannon.state = cannon.states.normal
@@ -45,8 +49,9 @@ function game.update(dt)
         cannonLaser:update(dt)
         -- ¿hemos alcanzado a algún enemigo del escuadrón?
         for i, ufo in pairs(squad.attackers) do
-            if ufo.state == ufo.states.normal and aabb_collision(cannonLaser.x, cannonLaser.y, cannonLaser.width, cannonLaser.height, ufo.x, ufo.y, ufo.width, ufo.height) then
+            if ufo.state == ufo.states.normal and aabb_collision(cannonLaser.x, cannonLaser.y, cannonLaser.width, cannonLaser.height, ufo.x, ufo.y, ufo.type.width, ufo.height) then
                 -- sí, le hemos dado
+                score = score + ufo.type.points
                 ufo.state = ufo.states.shot_received
                 cannonLaser.shooting = false
                 break
@@ -62,7 +67,7 @@ function game.update(dt)
     if time_since_last_shot >= time_next_shot and #squad.first_line_ufos > 0 then
         -- disparamos desde una de las naves de la primera línea
         local ufo_shooting = squad.first_line_ufos[math.random(1, #squad.first_line_ufos)]
-        table.insert(ufoLasers, UfoLaserClass.new(ufo_shooting.x + ufo_shooting.width / 2, ufo_shooting.y))
+        table.insert(ufoLasers, UfoLaserClass.new(ufo_shooting.x + ufo_shooting.type.width / 2, ufo_shooting.y))
         time_since_last_shot = 0
         time_next_shot = randomFloat(min_time_between_ufo_shots, max_time_between_ufo_shots)
     end
@@ -86,7 +91,7 @@ function draw_hud()
         math.floor(GAME_WIDTH / 3 + 0.5),
         "center"
     )
-    love.graphics.printf("0",
+    love.graphics.printf(score,
         0,
         2 * font:getHeight(),
         math.floor(GAME_WIDTH / 3 + 0.5),
@@ -98,7 +103,7 @@ function draw_hud()
         math.floor(GAME_WIDTH / 3 + 0.5),
         "center"
     )
-    love.graphics.printf("0",
+    love.graphics.printf(high_score,
         math.floor(GAME_WIDTH / 3 + 0.5),
         2 * font:getHeight(),
         math.floor(GAME_WIDTH / 3 + 0.5),

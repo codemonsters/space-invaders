@@ -17,7 +17,7 @@ Durante el desarrollo se han ido creando distintas ramas / branches para poder e
 * `disparo-ufo`: Disparos desde los ovnis
 * `colisiones-disparo-ufo`: Colisiones entre los disparos de los ovnis y el cañón
 * `vidas`: Si perdemos tres vidas volveremos al menú principal del juego
-
+* `puntos`: Puntos y máxima puntuación
 ## Cómo descargar el código
 
 Para descargar una rama particular:

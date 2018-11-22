@@ -1,15 +1,36 @@
 local Ufo = {
     max_time_exploding = 0.4, -- el tiempo que durará la explosión del ufo antes de desaparecer
     height = 8,
-    base_quads = {
-        octopus1 = love.graphics.newQuad(21, 3, 12, 8, atlas:getDimensions()),
-        octopus2 = love.graphics.newQuad(36, 3, 12, 8, atlas:getDimensions()),
-        crab1 = love.graphics.newQuad(51, 3, 11, 8, atlas:getDimensions()),
-        crab2 = love.graphics.newQuad(65, 3, 11, 8, atlas:getDimensions()),
-        squid1 = love.graphics.newQuad(79, 3, 8, 8, atlas:getDimensions()),
-        squid2 = love.graphics.newQuad(91, 3, 8, 8, atlas:getDimensions()),
-        exploding = love.graphics.newQuad(102, 3, 13, 8, atlas:getDimensions()),
+    types = {
+        octopus = {
+            name = "octopus",
+            quads = {
+                love.graphics.newQuad(21, 3, 12, 8, atlas:getDimensions()),
+                love.graphics.newQuad(36, 3, 12, 8, atlas:getDimensions()),
+            },
+            width = 12,
+            points = 10
+        },
+        crab = {
+            name = "crab",
+            quads = {
+                love.graphics.newQuad(51, 3, 11, 8, atlas:getDimensions()),
+                love.graphics.newQuad(65, 3, 11, 8, atlas:getDimensions()),
+            },
+            width = 11,
+            points = 20
+        },
+        squid = {
+            name = "squid",
+            quads = {
+                love.graphics.newQuad(79, 3, 8, 8, atlas:getDimensions()),
+                love.graphics.newQuad(91, 3, 8, 8, atlas:getDimensions()),
+            },
+            width = 8,
+            points = 30
+        }
     },
+    exploding_quad = love.graphics.newQuad(102, 3, 13, 8, atlas:getDimensions()),
     states = {
         normal = {
             update = function(self, dt, squad_translate_x, squad_translate_y)
@@ -17,7 +38,7 @@ local Ufo = {
                 self.y = self.y + squad_translate_y
             end,
             draw = function(self, frame)
-                love.graphics.draw(atlas, self.quads[frame], self.x, self.y)
+                love.graphics.draw(atlas, self.type.quads[frame], self.x, self.y)
             end
         },
         shot_received = {
@@ -28,7 +49,7 @@ local Ufo = {
                 self.state = self.states.exploding
             end,
             draw = function(self, frame)
-                love.graphics.draw(atlas, self.quads[frame], self.x, self.y)
+                love.graphics.draw(atlas, self.type.quads[frame], self.x, self.y)
             end
         },
         exploding = {
@@ -41,7 +62,7 @@ local Ufo = {
                 self.y = self.y + squad_translate_y
             end,
             draw = function(self, frame)
-                love.graphics.draw(atlas, self.base_quads.exploding, self.x, self.y)
+                love.graphics.draw(atlas, self.exploding_quad, self.x, self.y)
             end
         },
         dead = {
@@ -60,23 +81,11 @@ function Ufo.new(type)
     }
     setmetatable(o, Ufo) -- la clase Ufo será la metatabla del nuevo objeto que estamos creado
     if type == "octopus" then
-        o.quads = {
-            Ufo.base_quads.octopus1,
-            Ufo.base_quads.octopus2
-        }
-        o.width = 12
+        o.type = Ufo.types.octopus
     elseif type == "crab" then
-        o.quads = {
-            Ufo.base_quads.crab1,
-            Ufo.base_quads.crab2
-        }
-        o.width = 11
+        o.type = Ufo.types.crab
     elseif type == "squid" then
-        o.quads = {
-            Ufo.base_quads.squid1,
-            Ufo.base_quads.squid2
-        }
-        o.width = 8
+        o.type = Ufo.types.octopus
     else
         log.fatal("Imposible crear UFO: tipo no válido")
         return nil

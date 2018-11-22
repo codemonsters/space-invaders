@@ -38,7 +38,7 @@ function Squad.new()
                             self:refresh_first_line_ufo_list()
                         else
                             ufo:update(dt, self:vx() * dt, 0)   -- args: dt, translate_x, translate_y
-                            if ufo.state == ufo.states.normal and (ufo.x > GAME_WIDTH - ufo.width or ufo.x <= 0) then
+                            if ufo.state == ufo.states.normal and (ufo.x > GAME_WIDTH - ufo.type.width or ufo.x <= 0) then
                                 self.next_state = self.states.start_moving_down
                             end
                         end
@@ -100,7 +100,7 @@ function Squad:load()
             else
                 ufo = UfoClass.new("octopus")
             end
-            ufo:load(left - ufo.width / 2 + xdist * (i - 1), top + ydist * f)
+            ufo:load(left - ufo.type.width / 2 + xdist * (i - 1), top + ydist * f)
             table.insert(self.attackers, ufo)
         end
     end
@@ -116,7 +116,7 @@ function Squad:refresh_first_line_ufo_list()
         if ufo_a.state == ufo_a.states.normal then
             local has_ufo_below = false
             for _, ufo_b in pairs(self.attackers) do
-                if ufo_a.x < ufo_b.x + ufo_b.width and ufo_b.x < ufo_a.x + ufo_a.width and ufo_a.y < ufo_b.y then
+                if ufo_a.x < ufo_b.x + ufo_b.type.width and ufo_b.x < ufo_a.x + ufo_a.type.width and ufo_a.y < ufo_b.y then
                     has_ufo_below = true
                     break
                 end
