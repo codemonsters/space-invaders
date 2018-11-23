@@ -30,10 +30,10 @@ local Cannon = {
         shot_received = {
             update = function(self, dt)
                 self.time_exploding = 0 -- tiempo transcurrido desde el impacto
-                self.state = self.states.exploding
                 self.frame_num = 1 -- alternaremos entre 1 y 2 para animar el disparo
                 self.frame_elapsed_time = 0 -- el tiempo que llevamos dibujando este frame
                 self.frame_max_time = 0.07 -- el tiempo que mostraremos cada frame
+                self.state = self.states.exploding
             end,
             draw = function(self)
                 love.graphics.draw(atlas, self.quad, self.x, self.y)
@@ -61,8 +61,10 @@ local Cannon = {
             end
         },
         dead = {
-            update = function() end,
-            draw = function() end
+            update = function()
+            end,
+            draw = function()
+            end
         }
     }
 }
@@ -71,7 +73,7 @@ Cannon.__index = Cannon
 
 function Cannon.new()
     local o = {}
-    setmetatable(o, Cannon)   -- La clase Cannon será la metatabla del nuevo objeto que estamos creado
+    setmetatable(o, Cannon) -- La clase Cannon será la metatabla del nuevo objeto que estamos creado
     return o
 end
 

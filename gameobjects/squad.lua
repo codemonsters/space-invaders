@@ -2,9 +2,9 @@ local UfoClass = require("gameobjects/ufo")
 
 local Squad = {
     drop_per_turn = 8, -- distancia que los ovnis descenderan cada vez que alcancen el lateral de la pantalla
-    min_speed = 11 , -- veloicdad mínima (será la inicial del escuadrón, cuando todavía no hayamos destruido ningún enemigo)
-    max_speed = 80, -- velocidad máxima (se alcanzará cuando solo quede un enemigo en el escuadrón)
-    frame_change_speed_factor = 10, -- mayor valor para mantener el mismo frame durante más tiempo
+    min_speed = 110, -- veloicdad mínima (será la inicial del escuadrón, cuando todavía no hayamos destruido ningún enemigo)
+    max_speed = 800, -- velocidad máxima (se alcanzará cuando solo quede un enemigo en el escuadrón)
+    frame_change_speed_factor = 10 -- mayor valor para mantener el mismo frame durante más tiempo
 }
 
 Squad.__index = Squad
@@ -37,7 +37,7 @@ function Squad.new()
                             table.remove(self.attackers, i)
                             self:refresh_first_line_ufo_list()
                         else
-                            ufo:update(dt, self:vx() * dt, 0)   -- args: dt, translate_x, translate_y
+                            ufo:update(dt, self:vx() * dt, 0) -- args: dt, translate_x, translate_y
                             if ufo.state == ufo.states.normal and (ufo.x > GAME_WIDTH - ufo.type.width or ufo.x <= 0) then
                                 self.next_state = self.states.start_moving_down
                             end
@@ -58,13 +58,17 @@ function Squad.new()
                         if ufo.state == ufo.states.dead then
                             table.remove(self.attackers, i)
                         else
-                            ufo:update(dt, 0, self:vy() * dt)   -- args: dt, translate_x, translate_y
+                            ufo:update(dt, 0, self:vy() * dt) -- args: dt, translate_x, translate_y
                         end
                     end
                     if self.vertical_pixels_traveled >= self.drop_per_turn then
                         self.direction = -1 * self.direction
                         self.next_state = self.states.moving_sideways
                     end
+                end
+            },
+            invading = {
+                update = function(self, dt)
                 end
             }
         }
@@ -152,6 +156,16 @@ function Squad:update(dt)
             self.frame = 1
         end
     end
+end
+
+function Squad:y_max()
+    local y_max = 0
+    for _, ufo in pairs(self.attackers) do
+        if (ufo.y + ufo.height) > y_max then
+            y_max = ufo.y + ufo.height
+        end
+    end
+    return y_max
 end
 
 return Squad

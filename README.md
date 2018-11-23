@@ -18,6 +18,8 @@ Durante el desarrollo se han ido creando distintas ramas / branches para poder e
 * `colisiones-disparo-ufo`: Colisiones entre los disparos de los ovnis y el cañón
 * `vidas`: Si perdemos tres vidas volveremos al menú principal del juego
 * `puntos`: Puntos y máxima puntuación
+* `invasion-y-niveles`: Fin de partida si los invasores alcanzan la tierra y cambio de nivel al destruir un escuadrón completo
+
 ## Cómo descargar el código
 
 Para descargar una rama particular:

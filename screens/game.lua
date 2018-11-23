@@ -7,8 +7,8 @@ local SquadClass = require("gameobjects/squad")
 local squad = SquadClass.new()
 local UfoLaserClass = require("gameobjects/ufolaser")
 local ufoLasers
-local min_time_between_ufo_shots = 0.2   -- en segundos
-local max_time_between_ufo_shots = 3   -- en segundos
+local min_time_between_ufo_shots = 0.2 -- en segundos
+local max_time_between_ufo_shots = 3 -- en segundos
 local fire_pressed
 local lives
 
@@ -19,7 +19,7 @@ function game.load()
     cannon:load((GAME_WIDTH - cannon.width) / 2, GAME_HEIGHT - 20)
     cannonLaser:load()
     squad:load()
-    
+
     ufoLasers = {}
     time_since_last_shot = 0
     time_next_shot = randomFloat(min_time_between_ufo_shots, max_time_between_ufo_shots)
@@ -29,25 +29,42 @@ function game.update(dt)
     -- actualizamos la posición de la nave
     cannon:update(dt)
     if cannon.state == cannon.states.shot_received or cannon.state == cannon.states.exploding then
-        return  -- congelamos el estado del juego después de haber sido alcanzados
-    elseif cannon.state == cannon.states.dead then
-        ufoLasers = {}  -- eliminamos todos los disparos restantes de la pantalla antes de renacer
-        cannonLaser.active = false  -- eliminamos también nuestro disparo
+        return -- congelamos el estado del juego después de haber sido alcanzados
+    elseif cannon.state == cannon.states.dead or squad.state == squad.states.invading then
+        ufoLasers = {} -- eliminamos todos los disparos restantes de la pantalla antes de renacer
+        cannonLaser.active = false -- eliminamos también nuestro disparo
         lives = lives - 1
-        if lives == 0 then
+        if lives <= 0 then
             game_over()
         end
         cannon.state = cannon.states.normal
     end
     -- actualizamos la posición del escuadrón de enemigos
     squad:update(dt)
+    if squad:y_max() >= cannon.y then -- ¡los aliens han invadido la tierra! fin de partida
+        lives = 0
+        squad.state = squad.states.invading
+        cannon.state = cannon.states.shot_received
+    end
 
     -- disparo desde el cañón
     if cannonLaser.shooting then
         cannonLaser:update(dt)
         -- ¿hemos alcanzado a algún enemigo del escuadrón?
         for i, ufo in pairs(squad.attackers) do
-            if ufo.state == ufo.states.normal and aabb_collision(cannonLaser.x, cannonLaser.y, cannonLaser.width, cannonLaser.height, ufo.x, ufo.y, ufo.type.width, ufo.height) then
+            if
+                ufo.state == ufo.states.normal and
+                    aabb_collision(
+                        cannonLaser.x,
+                        cannonLaser.y,
+                        cannonLaser.width,
+                        cannonLaser.height,
+                        ufo.x,
+                        ufo.y,
+                        ufo.type.width,
+                        ufo.height
+                    )
+             then
                 -- sí, le hemos dado
                 score = score + ufo.type.points
                 ufo.state = ufo.states.shot_received
@@ -73,61 +90,64 @@ function game.update(dt)
         ufoLaser:update(dt)
         if ufoLaser.active == false then
             table.remove(ufoLasers, i)
-        elseif aabb_collision(ufoLaser.x, ufoLaser.y, ufoLaser.width, ufoLaser.height, cannon.x, cannon.y, cannon.width, cannon.height) then
+        elseif
+            aabb_collision(
+                ufoLaser.x,
+                ufoLaser.y,
+                ufoLaser.width,
+                ufoLaser.height,
+                cannon.x,
+                cannon.y,
+                cannon.width,
+                cannon.height
+            )
+         then
             cannon.state = cannon.states.shot_received
             ufoLaser.active = false
         end
-
     end
 end
 
 function draw_hud()
     love.graphics.setColor(COLOR_MAIN)
-    love.graphics.printf("SCORE",
-        0,
-        font:getHeight(),
-        math.floor(GAME_WIDTH / 3 + 0.5),
-        "center"
-    )
-    love.graphics.printf(score,
-        0,
-        2 * font:getHeight(),
-        math.floor(GAME_WIDTH / 3 + 0.5),
-        "center"
-    )
-    love.graphics.printf("HI-SCORE",
+    love.graphics.printf("SCORE", 0, font:getHeight(), math.floor(GAME_WIDTH / 3 + 0.5), "center")
+    love.graphics.printf(score, 0, 2 * font:getHeight(), math.floor(GAME_WIDTH / 3 + 0.5), "center")
+    love.graphics.printf(
+        "HI-SCORE",
         math.floor(GAME_WIDTH / 3 + 0.5),
         font:getHeight(),
         math.floor(GAME_WIDTH / 3 + 0.5),
         "center"
     )
-    love.graphics.printf(high_score,
+    love.graphics.printf(
+        high_score,
         math.floor(GAME_WIDTH / 3 + 0.5),
         2 * font:getHeight(),
         math.floor(GAME_WIDTH / 3 + 0.5),
         "center"
     )
-    love.graphics.printf("LIVES",
+    love.graphics.printf(
+        "LIVES",
         math.floor(GAME_WIDTH * 2 / 3 + 0.5),
         font:getHeight(),
         math.floor(GAME_WIDTH / 3 + 0.5),
         "center"
     )
 
-    love.graphics.printf(lives,
+    love.graphics.printf(
+        lives,
         math.floor(GAME_WIDTH * 2 / 3 + 0.5),
         2 * font:getHeight(),
         math.floor(GAME_WIDTH / 3 + 0.5),
         "center"
     )
-
 end
 
 function game.draw()
     -- el fondo del mundo
     love.graphics.setBackgroundColor(COLOR_BACKGROUND)
     love.graphics.clear(love.graphics.getBackgroundColor())
-    
+
     draw_hud()
 
     if cannonLaser.shooting then
@@ -177,9 +197,9 @@ function aabb_collision(x1, y1, w1, h1, x2, y2, w2, h2)
 end
 
 function randomFloat(min, max)
-	local range = max - min
-	local offset = range * math.random()
-	return min + offset
+    local range = max - min
+    local offset = range * math.random()
+    return min + offset
 end
 
 return game
