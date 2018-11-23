@@ -73,10 +73,6 @@ function game.update(dt)
                 score = score + ufo.type.points
                 ufo.state = ufo.states.shot_received
                 cannonLaser.shooting = false
-                if #squad.attackers < 1 then
-                    -- hemos destruido a todo el escuadrón, cambiamos de nivel
-                    init_level()
-                end
                 break
             end
         end
@@ -113,6 +109,11 @@ function game.update(dt)
             cannon.state = cannon.states.shot_received
             ufoLaser.active = false
         end
+    end
+
+    -- Cambiamos de nivel si eliminamos todo el escuadrón
+    if #squad.attackers < 1 then
+        game.init_level()
     end
 end
 
