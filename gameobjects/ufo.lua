@@ -6,7 +6,7 @@ local Ufo = {
             name = "octopus",
             quads = {
                 love.graphics.newQuad(21, 3, 12, 8, atlas:getDimensions()),
-                love.graphics.newQuad(36, 3, 12, 8, atlas:getDimensions()),
+                love.graphics.newQuad(36, 3, 12, 8, atlas:getDimensions())
             },
             width = 12,
             points = 10
@@ -15,7 +15,7 @@ local Ufo = {
             name = "crab",
             quads = {
                 love.graphics.newQuad(51, 3, 11, 8, atlas:getDimensions()),
-                love.graphics.newQuad(65, 3, 11, 8, atlas:getDimensions()),
+                love.graphics.newQuad(65, 3, 11, 8, atlas:getDimensions())
             },
             width = 11,
             points = 20
@@ -24,7 +24,7 @@ local Ufo = {
             name = "squid",
             quads = {
                 love.graphics.newQuad(79, 3, 8, 8, atlas:getDimensions()),
-                love.graphics.newQuad(91, 3, 8, 8, atlas:getDimensions()),
+                love.graphics.newQuad(91, 3, 8, 8, atlas:getDimensions())
             },
             width = 8,
             points = 30
@@ -66,8 +66,10 @@ local Ufo = {
             end
         },
         dead = {
-            update = function() end,
-            draw = function() end
+            update = function()
+            end,
+            draw = function()
+            end
         }
     }
 }
@@ -77,7 +79,7 @@ Ufo.__index = Ufo
 function Ufo.new(type)
     local o = {
         x = 0,
-        y = 0,
+        y = 0
     }
     setmetatable(o, Ufo) -- la clase Ufo será la metatabla del nuevo objeto que estamos creado
     if type == "octopus" then
@@ -85,7 +87,7 @@ function Ufo.new(type)
     elseif type == "crab" then
         o.type = Ufo.types.crab
     elseif type == "squid" then
-        o.type = Ufo.types.octopus
+        o.type = Ufo.types.squid
     else
         log.fatal("Imposible crear UFO: tipo no válido")
         return nil

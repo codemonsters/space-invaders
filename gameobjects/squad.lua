@@ -95,6 +95,13 @@ function Squad:load()
 
     -- creamos el escuadrón inicial de enemigos
     for f = 0, 4 do
+        if f < 1 then
+            print("-> FILA SQUIDS")
+        elseif f < 3 then
+            print("-> FILA CRABS")
+        else
+            print("-> FILA OCTOPUS")
+        end
         for i = 1, 11 do
             local ufo
             if f < 1 then
