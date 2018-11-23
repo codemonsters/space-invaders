@@ -1,9 +1,12 @@
 local UfoClass = require("gameobjects/ufo")
 
 local Squad = {
+    left = 100, -- espacio por la izquierda hasta el centro del primero ufo
+    top = 40, -- espacio libre inicial encima de los ufos de la primera fila
+    ydist = 15, -- espacio vertical entre ufos
     drop_per_turn = 8, -- distancia que los ovnis descenderan cada vez que alcancen el lateral de la pantalla
-    min_speed = 110, -- veloicdad mínima (será la inicial del escuadrón, cuando todavía no hayamos destruido ningún enemigo)
-    max_speed = 800, -- velocidad máxima (se alcanzará cuando solo quede un enemigo en el escuadrón)
+    min_speed = 11, -- velocodad mínima (será la inicial del escuadrón, cuando todavía no hayamos destruido ningún enemigo)
+    max_speed = 80, -- velocidad máxima (se alcanzará cuando solo quede un enemigo en el escuadrón)
     frame_change_speed_factor = 10 -- mayor valor para mantener el mismo frame durante más tiempo
 }
 
@@ -79,10 +82,7 @@ function Squad.new()
 end
 
 function Squad:load()
-    local left = 100 -- espacio por la izquierda hasta el centro del primero ufo
-    local xdist = (GAME_WIDTH - left * 2) / 10 -- espacio horizontal entre ufos (respecto a sus centros)
-    local top = 40 -- espacio libre inicial encima de los ufos de la primera fila
-    local ydist = 15 -- espacio vertical entre ufos
+    local xdist = (GAME_WIDTH - self.left * 2) / 10 -- espacio horizontal entre ufos (respecto a sus centros)
     self.direction = 1 -- 1 derecha, -1 izquierda (lo usaremos como factor de una multiplicación, para sumar o restar a la hora de calcular desplazamientos)
     self.frame = 1 -- alternaremos entre 1 y 2 para animar todos los ovnis al mismo tiempo
     self.frame_elapsed_time = 0 -- el tiempo que llevamos dibujando este frame
@@ -104,7 +104,7 @@ function Squad:load()
             else
                 ufo = UfoClass.new("octopus")
             end
-            ufo:load(left - ufo.type.width / 2 + xdist * (i - 1), top + ydist * f)
+            ufo:load(self.left - ufo.type.width / 2 + xdist * (i - 1), self.top + self.ydist * f)
             table.insert(self.attackers, ufo)
         end
     end

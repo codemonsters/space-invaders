@@ -15,12 +15,16 @@ local lives
 function game.load()
     score = 0
     lives = 3
-    fire_pressed = false
+    game.init_level()
+end
+
+function game.init_level()
     cannon:load((GAME_WIDTH - cannon.width) / 2, GAME_HEIGHT - 20)
     cannonLaser:load()
     squad:load()
 
     ufoLasers = {}
+    fire_pressed = false
     time_since_last_shot = 0
     time_next_shot = randomFloat(min_time_between_ufo_shots, max_time_between_ufo_shots)
 end
